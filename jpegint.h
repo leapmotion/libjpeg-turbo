@@ -387,6 +387,10 @@ EXTERN(void) jzero_far JPP((void FAR * target, size_t bytestozero));
 extern const int jpeg_zigzag_order[]; /* natural coef order to zigzag order */
 #endif
 extern const int jpeg_natural_order[]; /* zigzag coef order to natural order */
+#ifdef WITH_OPENCL_DECODING_SUPPORTED
+/* zigzag coef order to natural order - OpenCL version */
+extern const int jpeg_natural_order_ocl[];
+#endif
 
 /* Arithmetic coding probability estimation tables in jaricom.c */
 extern const INT32 jpeg_aritab[];

@@ -35,6 +35,9 @@ if WITH_ARITH_DEC
 libjpeg_la_SOURCES += jdarith.c
 endif
 
+if WITH_OPENCL_DEC
+libjpeg_la_SOURCES += jocldec.c joclinit.c
+endif
 
 SUBDIRS = java
 

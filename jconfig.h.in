@@ -12,6 +12,9 @@
 /* Support arithmetic decoding */
 #undef D_ARITH_CODING_SUPPORTED
 
+/* Support opencl decoding */
+#undef WITH_OPENCL_DECODING_SUPPORTED
+
 /* Support in-memory source/destination managers */
 #undef MEM_SRCDST_SUPPORTED
 
@@ -58,3 +61,11 @@
 
 /* Define to `unsigned int' if <sys/types.h> does not define. */
 #undef size_t
+
+/* Define envionment variables of OpenCL decoding. */
+#ifdef WITH_OPENCL_DECODING_SUPPORTED
+#define OPENCL_PIPELINE           /* Pipeline or no pipeline */
+#define MAX_IMAGE_WIDTH   4096    /* Using to set the buffer size */
+#define MAX_IMAGE_HEIGHT  4096    /* Using to set the buffer size */
+#define NUM_COMPONENT     3       /* The number of component */
+#endif

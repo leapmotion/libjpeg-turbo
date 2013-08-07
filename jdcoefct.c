@@ -5,6 +5,7 @@
  * Copyright (C) 1994-1997, Thomas G. Lane.
  * Modifications:
  * Copyright (C) 2010, D. R. Commander.
+ * Copyright (C) 2012-2013, MulticoreWare Inc.
  * For conditions of distribution and use, see the accompanying README file.
  *
  * This file contains the coefficient buffer controller for decompression.
@@ -20,6 +21,12 @@
 #include "jinclude.h"
 #include "jpeglib.h"
 #include "jpegcomp.h"
+
+#ifdef WITH_OPENCL_DECODING_SUPPORTED
+#include "CL/opencl.h"
+#include "joclinit.h"
+#include "jocldec.h"
+#endif
 
 /* Block smoothing is only applicable for progressive JPEG, so: */
 #ifndef D_PROGRESSIVE_SUPPORTED
@@ -162,6 +169,201 @@ decompress_onepass (j_decompress_ptr cinfo, JSAMPIMAGE output_buf)
   jpeg_component_info *compptr;
   inverse_DCT_method_ptr inverse_DCT;
 
+#ifdef WITH_OPENCL_DECODING_SUPPORTED
+  int mcuy  = 0, index = 0;
+  int block = cinfo->MCUs_per_row;
+  int i, j, upfactor;
+  int qutable[128];
+  float qutable_float[128];
+  short* qutable_short_inter = (short *)jocl_global_data_ptr_qutable;
+  int* qutable_int_inter = (int *)jocl_global_data_ptr_qutable;
+
+  /*offset_input is used to compute the offset of input and output for Kernel*/
+  unsigned int offset_input = 0;
+  /*kernel execution times  = cinfo->total_iMCU_rows/mcuNums*/
+  unsigned int mcuNums      = 800;
+  unsigned int mcudecoder   = 0;
+  int rows_per_iMCU_row     = coef->MCU_rows_per_iMCU_row;
+  int decodeMCU = 0;
+  int total_mcu_num = cinfo->total_iMCU_rows * rows_per_iMCU_row * cinfo->MCUs_per_row;
+  /*IDCT FAST SHORT*/
+  static const int aanscales[DCTSIZE2] = {
+	  /* precomputed values scaled up by 14 bits */
+	  16384, 22725, 21407, 19266, 16384, 12873,  8867,  4520,
+	  22725, 31521, 29692, 26722, 22725, 17855, 12299,  6270,
+	  21407, 29692, 27969, 25172, 21407, 16819, 11585,  5906,
+	  19266, 26722, 25172, 22654, 19266, 15137, 10426,  5315,
+	  16384, 22725, 21407, 19266, 16384, 12873,  8867,  4520,
+	  12873, 17855, 16819, 15137, 12873, 10114,  6967,  3552,
+	   8867, 12299, 11585, 10426,  8867,  6967,  4799,  2446,
+	   4520,  6270,  5906,  5315,  4520,  3552,  2446,  1247
+  };
+  /*IDCT FAST FLOAT */
+  static const double aanscalefactor[8] = {1.0, 1.387039845, 1.306562965, 1.175875602,
+                                           1.0, 0.785694958, 0.541196100, 0.275899379};
+
+
+  if (CL_TRUE == jocl_cl_is_available()) { 
+    switch (cinfo->dct_method){
+	  case JDCT_IFAST:{
+	    /*IDCT FAST INT*/
+        for (i = 0; i < DCTSIZE2; ++i) {
+          qutable[i] = cinfo->quant_tbl_ptrs[0]->quantval[i];
+        }
+        if (cinfo->quant_tbl_ptrs[1]->quantval != NULL) {
+          for (i = 0; i < DCTSIZE2; ++i) {
+            qutable[i + DCTSIZE2] = cinfo->quant_tbl_ptrs[1]->quantval[i];
+          }
+        }
+        else {
+          for (i = 0; i < DCTSIZE2; ++i) {
+            qutable[i + DCTSIZE2] = cinfo->quant_tbl_ptrs[0]->quantval[i];
+          }
+        }
+        for(i = 0; i < DCTSIZE ; ++i)
+          for(j = 0 ; j < DCTSIZE ; ++j) {
+            qutable_short_inter[j*8+i] = ((qutable[i*8+j] * aanscales[i*8+j]) +
+              (1 << ((12)-1))) >> 12;
+            qutable_short_inter[DCTSIZE2+j*8+i] = ((qutable[DCTSIZE2 + i*8+j] *
+              aanscales[i*8+j]) + (1 << ((12)-1))) >> 12;
+	    }
+		break;
+	  }
+	  case JDCT_FLOAT:{
+	    /*IDCT FAST FLOAT*/ 
+        for (i = 0; i < DCTSIZE2; ++i) {
+          qutable_float[i] = cinfo->quant_tbl_ptrs[0]->quantval[i];
+        }
+        if (cinfo->quant_tbl_ptrs[1]->quantval != NULL) {
+          for (i = 0; i < DCTSIZE2; ++i) {
+            qutable_float[i + DCTSIZE2] = cinfo->quant_tbl_ptrs[1]->quantval[i];
+          }
+        }
+        else {
+          for (i = 0; i < DCTSIZE2; ++i) {
+            qutable_float[i + DCTSIZE2] = cinfo->quant_tbl_ptrs[0]->quantval[i];
+          }
+        }
+	    for (i = 0; i < 8; i++) 
+          for (j = 0; j < 8; j++) {
+            jocl_global_data_ptr_qutable[j * 8 + i] = (float)(qutable_float[i * 8 + j] *
+              aanscalefactor[i] * aanscalefactor[j]);
+            jocl_global_data_ptr_qutable[DCTSIZE2 + j * 8 + i] = (float)(qutable_float[DCTSIZE2 + i * 8 + j] *
+              aanscalefactor[i] * aanscalefactor[j]);
+          }
+		break;
+	  }
+	  case JDCT_ISLOW: {
+	    /*IDCT SLOW INT*/
+        for (i = 0; i < DCTSIZE2; ++i) {
+          qutable[i] = cinfo->quant_tbl_ptrs[0]->quantval[i];
+        }
+        if (cinfo->quant_tbl_ptrs[1]->quantval != NULL) {
+          for (i = 0; i < DCTSIZE2; ++i) {
+            qutable[i + DCTSIZE2] = cinfo->quant_tbl_ptrs[1]->quantval[i];
+          }
+        }
+        else {
+          for (i = 0; i < DCTSIZE2; ++i) {
+            qutable[i + DCTSIZE2] = cinfo->quant_tbl_ptrs[0]->quantval[i];
+          }
+        }
+        for (i = 0; i < 8; i++)
+          for (j = 0; j < 8; j++) {
+            qutable_int_inter[j * 8 + i] = qutable[i * 8 + j];
+            qutable_int_inter[DCTSIZE2 + j * 8 + i] = qutable[DCTSIZE2 + i * 8 + j];
+          }
+	    break;
+      }
+	}
+    if(cinfo->max_v_samp_factor == 2) {
+      if(cinfo->max_h_samp_factor == 1)
+        upfactor = 5;
+      else
+        upfactor = 6;
+    } 
+    else if (cinfo->max_h_samp_factor == 2) {
+      upfactor = 4;
+    }
+    else {
+      upfactor = 3;
+    }
+    for (; cinfo->input_iMCU_row < cinfo->total_iMCU_rows; 
+      (cinfo->input_iMCU_row)++) {
+      /* Loop to process as much as one whole iMCU row */
+      for (yoffset = coef->MCU_vert_offset; yoffset < coef->MCU_rows_per_iMCU_row;
+        yoffset++) {
+        for (MCU_col_num = coef->MCU_ctr; MCU_col_num <= last_MCU_col;
+          MCU_col_num++) {
+          if (CL_TRUE== jocl_cl_is_available()) {
+#ifndef JOCL_CL_OS_WIN32       
+            jocl_global_data_ptr_input = (JCOEFPTR)jocl_clEnqueueMapBuffer(
+              jocl_cl_get_command_queue(), jocl_global_data_mem_input, CL_TRUE,
+              CL_MAP_WRITE_INVALIDATE_REGION, 0, MAX_IMAGE_WIDTH * MAX_IMAGE_HEIGHT * 4,
+              0, NULL, NULL, NULL);
+#endif
+            for (index = 0; index<cinfo->blocks_in_MCU; ++index)
+              coef->MCU_buffer[index] = (JBLOCKROW)(jocl_global_data_ptr_input +
+                mcuy++ * DCTSIZE2);
+          }
+          if (! (*cinfo->entropy->decode_mcu) (cinfo, coef->MCU_buffer)) {
+            /* Suspension forced; update state counters and exit */
+            coef->MCU_vert_offset = yoffset;
+            coef->MCU_ctr = MCU_col_num;
+            return JPEG_SUSPENDED;
+          }
+          decodeMCU++;
+          mcudecoder++;
+
+          if(CL_TRUE == jocl_cl_is_nvidia_opencl()) {
+            if (     
+              (decodeMCU == cinfo->total_iMCU_rows *
+              coef->MCU_rows_per_iMCU_row * (last_MCU_col+1))) {
+              jocldec_run_kernels_full_image(cinfo,
+                                             upfactor,
+                                             mcudecoder,
+                                             block,
+                                             offset_input,
+                                             total_mcu_num,
+                                             decodeMCU);
+              offset_input += mcudecoder;
+              mcudecoder = 0;
+            }
+          }
+          else {
+            if (
+#ifdef OPENCL_PIPELINE
+              decodeMCU % mcuNums==0 ||
+#endif        
+              (decodeMCU == cinfo->total_iMCU_rows *
+              coef->MCU_rows_per_iMCU_row * (last_MCU_col+1))) {
+              jocldec_run_kernels_full_image(cinfo,
+                                             upfactor,
+                                             mcudecoder,
+                                             block,
+                                             offset_input,
+                                             total_mcu_num,
+                                             decodeMCU);
+              offset_input += mcudecoder;
+              mcudecoder = 0;
+            }
+          }
+        }
+        /* Completed an MCU row, but perhaps not an iMCU row */
+        coef->MCU_ctr = 0;
+	  }
+      if (cinfo->input_iMCU_row != (cinfo->total_iMCU_rows - 1)) {
+	    start_iMCU_row(cinfo);
+	  }
+    }
+	/* Completed the iMCU row, advance counters for next one */
+	if ( ++(cinfo->output_iMCU_row) < cinfo->total_iMCU_rows) {
+      (*cinfo->inputctl->finish_input_pass) (cinfo);
+      return JPEG_ROW_COMPLETED;
+    }
+  }
+  else {
+#endif
   /* Loop to process as much as one whole iMCU row */
   for (yoffset = coef->MCU_vert_offset; yoffset < coef->MCU_rows_per_iMCU_row;
        yoffset++) {
@@ -220,6 +422,9 @@ decompress_onepass (j_decompress_ptr cinfo, JSAMPIMAGE output_buf)
     start_iMCU_row(cinfo);
     return JPEG_ROW_COMPLETED;
   }
+#ifdef WITH_OPENCL_DECODING_SUPPORTED
+  }
+#endif
   /* Completed the scan */
   (*cinfo->inputctl->finish_input_pass) (cinfo);
   return JPEG_SCAN_COMPLETED;

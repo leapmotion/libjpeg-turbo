@@ -5,6 +5,7 @@
  * Copyright (C) 1991-1997, Thomas G. Lane.
  * Modifications:
  * Copyright (C) 2009-2011, D. R. Commander.
+ * Copyright (C) 2012-2013, MulticoreWare Inc.
  * For conditions of distribution and use, see the accompanying README file.
  *
  * This file contains Huffman entropy decoding routines.
@@ -21,6 +22,11 @@
 #include "jpeglib.h"
 #include "jdhuff.h"		/* Declarations shared with jdphuff.c */
 #include "jpegcomp.h"
+
+#ifdef WITH_OPENCL_DECODING_SUPPORTED
+#include "CL/opencl.h"
+#include "joclinit.h"
+#endif
 
 
 /*
@@ -604,7 +610,14 @@ decode_mcu_slow (j_decompress_ptr cinfo, JBLOCKROW *MCU_data)
            * Note: the extra entries in jpeg_natural_order[] will save us
            * if k >= DCTSIZE2, which could happen if the data is corrupted.
            */
+#ifdef WITH_OPENCL_DECODING_SUPPORTED
+          if (!jocl_cl_is_available())
+#endif
           (*block)[jpeg_natural_order[k]] = (JCOEF) s;
+#ifdef WITH_OPENCL_DECODING_SUPPORTED
+          else
+            (*block)[jpeg_natural_order_ocl[k]] = (JCOEF) s;
+#endif
         } else {
           if (r != 15)
             break;
@@ -689,7 +702,14 @@ decode_mcu_fast (j_decompress_ptr cinfo, JBLOCKROW *MCU_data)
           FILL_BIT_BUFFER_FAST
           r = GET_BITS(s);
           s = HUFF_EXTEND(r, s);
+#ifdef WITH_OPENCL_DECODING_SUPPORTED
+          if (!jocl_cl_is_available())
+#endif
           (*block)[jpeg_natural_order[k]] = (JCOEF) s;
+#ifdef WITH_OPENCL_DECODING_SUPPORTED
+          else
+            (*block)[jpeg_natural_order_ocl[k]] = (JCOEF) s;
+#endif
         } else {
           if (r != 15) break;
           k += 15;

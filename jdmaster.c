@@ -6,6 +6,7 @@
  * Modified 2002-2009 by Guido Vollbeding.
  * Modifications:
  * Copyright (C) 2009-2011, D. R. Commander.
+ * Copyright (C) 2012-2013, MulticoreWare Inc.
  * For conditions of distribution and use, see the accompanying README file.
  *
  * This file contains master control logic for the JPEG decompressor.
@@ -19,6 +20,11 @@
 #include "jpeglib.h"
 #include "jpegcomp.h"
 
+#ifdef WITH_OPENCL_DECODING_SUPPORTED
+#include "CL/opencl.h"
+#include "joclinit.h"
+#include "jocldec.h"
+#endif
 
 /* Private state */
 
@@ -49,6 +55,13 @@ use_merged_upsample (j_decompress_ptr cinfo)
 {
 #ifdef UPSAMPLE_MERGING_SUPPORTED
   /* Merging is the equivalent of plain box-filter upsampling */
+
+#ifdef WITH_OPENCL_DECODING_SUPPORTED
+  if (CL_TRUE == jocl_cl_is_available()) { 
+    cinfo->do_fancy_upsampling = TRUE;
+  }
+#endif
+
   if (cinfo->do_fancy_upsampling || cinfo->CCIR601_sampling)
     return FALSE;
   /* jdmerge.c only supports YCC=>RGB color conversion */

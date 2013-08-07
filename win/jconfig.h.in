@@ -3,6 +3,8 @@
 
 #define JPEG_LIB_VERSION @JPEG_LIB_VERSION@
 #define LIBJPEG_TURBO_VERSION @VERSION@
+#cmakedefine WITH_OPENCL_DECODING_SUPPORTED
+#cmakedefine JOCL_CL_OS_WIN32
 #cmakedefine C_ARITH_CODING_SUPPORTED
 #cmakedefine D_ARITH_CODING_SUPPORTED
 #cmakedefine MEM_SRCDST_SUPPORTED
@@ -39,3 +41,11 @@ typedef signed int INT32;
 #undef RIGHT_SHIFT_IS_UNSIGNED
 
 #endif /* JPEG_INTERNALS */
+
+/* Define envionment variables of OpenCL decoding. */
+#ifdef WITH_OPENCL_DECODING_SUPPORTED
+#define OPENCL_PIPELINE           /* Pipeline or no pipeline */
+#define MAX_IMAGE_WIDTH   4096    /* Using to set the buffer size */
+#define MAX_IMAGE_HEIGHT  4096    /* Using to set the buffer size */
+#define NUM_COMPONENT     3       /* The number of component */
+#endif

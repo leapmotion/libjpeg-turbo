@@ -21,6 +21,15 @@ AC_PROG_INSTALL
 AC_PROG_LIBTOOL
 AC_PROG_LN_S
 
+#check dlopen
+AC_SEARCH_LIBS(dlopen, dl)
+old_ldflags="${LDFLAGS}"
+LDFLAGS="${LDFLAGS} -Wl,-export-dynamic"
+AC_TRY_LINK(, [int i;], found_export_dynamic=yes, found_export_dynamic=no)
+if test $found_export_dynamic = no; then
+  LDFLAGS="${old_ldflags}"
+fi
+
 # When the prefix is /opt/libjpeg-turbo, we assume that an "official" binary is
 # being created, and thus we install things into specific locations.
 
@@ -303,6 +312,20 @@ AM_CONDITIONAL([WITH_ARITH_DEC], [test "x$with_arith_dec" != "xno"])
 
 AM_CONDITIONAL([WITH_ARITH],
   [test "x$with_arith_dec" != "xno" -o "x$with_arith_enc" != "xno"])
+
+# OpenCL decoding support
+AC_MSG_CHECKING([whether to include opencl decoding support])
+AC_ARG_WITH([opencl-dec],
+  AC_HELP_STRING([--with-opencl-dec],
+    [Include opencl decoding support]))
+if test "x$with_opencl_dec" = "xyes"; then
+  AC_DEFINE([WITH_OPENCL_DECODING_SUPPORTED], [1], [Support OpenCL decoding])
+  AC_MSG_RESULT(yes)
+  RPM_CONFIG_ARGS="$RPM_CONFIG_ARGS --with-opencl-dec"
+else
+  AC_MSG_RESULT(no)
+fi
+AM_CONDITIONAL([WITH_OPENCL_DEC], [test "x$with_opencl_dec" = "xyes"])
 
 # TurboJPEG support
 AC_MSG_CHECKING([whether to build TurboJPEG C wrapper])

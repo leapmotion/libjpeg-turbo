@@ -3,6 +3,8 @@
  *
  * Copyright (C) 1991-1996, Thomas G. Lane.
  * This file is part of the Independent JPEG Group's software.
+ * Modifications:
+ * Copyright (C) 2012-2013, MulticoreWare Inc.
  * For conditions of distribution and use, see the accompanying README file.
  *
  * This file contains tables and miscellaneous utility routines needed
@@ -63,6 +65,20 @@ const int jpeg_natural_order[DCTSIZE2+16] = {
  63, 63, 63, 63, 63, 63, 63, 63
 };
 
+#ifdef WITH_OPENCL_DECODING_SUPPORTED
+const int jpeg_natural_order_ocl[DCTSIZE2+16] = {
+  0,  8,  1,  2,  9, 16, 24, 17,
+ 10,  3,  4, 11, 18, 25, 32, 40,
+ 33, 26, 19, 12,  5,  6, 13, 20,
+ 27, 34, 41, 48, 56, 49, 42, 35,
+ 28, 21, 14,  7, 15, 22, 29, 36,
+ 43, 50, 57, 58, 51, 44, 37, 30,
+ 23, 31, 38, 45, 52, 59, 60, 53,
+ 46, 39, 47, 54, 61, 62, 55, 63,
+ 63, 63, 63, 63, 63, 63, 63, 63, /* extra entries for safety in decoder */
+ 63, 63, 63, 63, 63, 63, 63, 63
+};
+#endif
 
 /*
  * Arithmetic utilities

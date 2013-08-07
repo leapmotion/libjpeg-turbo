@@ -41,12 +41,27 @@ endif()
 message(STATUS "VERSION = ${VERSION}, BUILD = ${BUILD}")
 
 option(WITH_SIMD "Include SIMD extensions" TRUE)
+option(WITH_OPENCL_DEC "Include OpenCL decoding extensions" TRUE)
 option(WITH_ARITH_ENC "Include arithmetic encoding support" TRUE)
 option(WITH_ARITH_DEC "Include arithmetic decoding support" TRUE)
 option(WITH_JPEG7 "Emulate libjpeg v7 API/ABI (this makes libjpeg-turbo backward incompatible with libjpeg v6b)" FALSE)
 option(WITH_JPEG8 "Emulate libjpeg v8 API/ABI (this makes libjpeg-turbo backward incompatible with libjpeg v6b)" FALSE)
 option(WITH_MEM_SRCDST "Include in-memory source/destination manager functions when emulating the libjpeg v6b or v7 API/ABI" TRUE)
 option(WITH_JAVA "Build Java wrapper for the TurboJPEG library" FALSE)
+
+if(WITH_OPENCL_DEC)
+  set(WITH_OPENCL_DECODING_SUPPORTED 1)
+  message(STATUS "OpenCL decoding support enabled")
+else()
+  message(STATUS "OpenCL decoding support disabled")
+endif()
+
+if(WIN32)
+  set(JOCL_CL_OS_WIN32 1)
+  message(STATUS "The system is Windows")
+else()
+  message(STATUS "The system is not Windows")
+endif()
 
 if(WITH_ARITH_ENC)
   set(C_ARITH_CODING_SUPPORTED 1)
@@ -163,6 +178,10 @@ set(JPEG_SOURCES jcapimin.c jcapistd.c jccoefct.c jccolor.c jcdctmgr.c jchuff.c
   jdmaster.c jdmerge.c jdphuff.c jdpostct.c jdsample.c jdtrans.c jerror.c
   jfdctflt.c jfdctfst.c jfdctint.c jidctflt.c jidctfst.c jidctint.c jidctred.c
   jquant1.c jquant2.c jutils.c jmemmgr.c jmemnobs.c)
+
+if(WITH_OPENCL_DEC)
+  set(JPEG_SOURCES ${JPEG_SOURCES} joclinit.c jocldec.c)
+endif()
 
 if(WITH_ARITH_ENC OR WITH_ARITH_DEC)
   set(JPEG_SOURCES ${JPEG_SOURCES} jaricom.c)

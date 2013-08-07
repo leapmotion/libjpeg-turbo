@@ -6,6 +6,7 @@
  * Modifications:
  * Copyright 2009 Pierre Ossman <ossman@cendio.se> for Cendio AB
  * Copyright (C) 2010, D. R. Commander.
+ * Copyright (C) 2012-2013, MulticoreWare Inc.
  * For conditions of distribution and use, see the accompanying README file.
  *
  * This file contains upsampling routines.
@@ -26,6 +27,11 @@
 #include "jpeglib.h"
 #include "jsimd.h"
 #include "jpegcomp.h"
+#ifdef WITH_OPENCL_DECODING_SUPPORTED
+#include "CL/opencl.h"
+#include "joclinit.h"
+#include "jocldec.h"
+#endif
 
 
 /* Pointer to routine to upsample a single component */
@@ -103,7 +109,11 @@ sep_upsample (j_decompress_ptr cinfo,
   JDIMENSION num_rows;
 
   /* Fill the conversion buffer, if it's empty */
+#ifdef WITH_OPENCL_DECODING_SUPPORTED
+  if (CL_FALSE == jocl_cl_is_available() && upsample->next_row_out >= cinfo->max_v_samp_factor) {
+#else
   if (upsample->next_row_out >= cinfo->max_v_samp_factor) {
+#endif
     for (ci = 0, compptr = cinfo->comp_info; ci < cinfo->num_components;
 	 ci++, compptr++) {
       /* Invoke per-component upsample method.  Notice we pass a POINTER
@@ -116,6 +126,10 @@ sep_upsample (j_decompress_ptr cinfo,
     upsample->next_row_out = 0;
   }
 
+#ifdef WITH_OPENCL_DECODING_SUPPORTED
+     if (CL_TRUE == jocl_cl_is_available())
+        upsample->next_row_out = 0;
+#endif
   /* Color-convert and emit rows */
 
   /* How many we have in the buffer: */
@@ -130,6 +144,13 @@ sep_upsample (j_decompress_ptr cinfo,
   if (num_rows > out_rows_avail)
     num_rows = out_rows_avail;
 
+#ifdef WITH_OPENCL_DECODING_SUPPORTED
+  if (CL_TRUE== jocl_cl_is_available()) {
+    *output_buf = &jocl_global_data_ptr_output[cinfo->output_scanline * 
+      cinfo->max_h_samp_factor * cinfo->MCUs_per_row * DCTSIZE * NUM_COMPONENT];
+  }
+  else
+#endif
   (*cinfo->cconvert->color_convert) (cinfo, upsample->color_buf,
 				     (JDIMENSION) upsample->next_row_out,
 				     output_buf + *out_row_ctr,

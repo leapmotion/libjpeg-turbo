@@ -5,6 +5,7 @@
  * Copyright (C) 1994-1996, Thomas G. Lane.
  * Modifications:
  * Copyright (C) 2010, D. R. Commander.
+ * Copyright (C) 2012-2013, MulticoreWare Inc.
  * For conditions of distribution and use, see the accompanying README file.
  *
  * This file contains application interface code for the decompression half
@@ -21,6 +22,10 @@
 #include "jpeglib.h"
 #include "jpegcomp.h"
 
+#ifdef WITH_OPENCL_DECODING_SUPPORTED
+#include "CL/opencl.h"
+#include "joclinit.h"
+#endif
 
 /* Forward declarations */
 LOCAL(boolean) output_pass_setup JPP((j_decompress_ptr cinfo));
@@ -50,6 +55,15 @@ jpeg_start_decompress (j_decompress_ptr cinfo)
     }
     cinfo->global_state = DSTATE_PRELOAD;
   }
+
+#ifdef WITH_OPENCL_DECODING_SUPPORTED
+  /* Determine whether the OpenCL decoding will be used.*/
+  if(jocl_cl_is_support_opencl() && jocl_cl_is_opencl_decompress(cinfo))
+    jocl_cl_set_opencl_success();
+  else
+    jocl_cl_set_opencl_failure();
+#endif
+
   if (cinfo->global_state == DSTATE_PRELOAD) {
     /* If file has multiple scans, absorb them all into the coef buffer */
     if (cinfo->inputctl->has_multiple_scans) {
