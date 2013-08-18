@@ -57,6 +57,8 @@ use_merged_upsample (j_decompress_ptr cinfo)
   /* Merging is the equivalent of plain box-filter upsampling */
 
 #ifdef WITH_OPENCL_DECODING_SUPPORTED
+  if(FALSE == cinfo->do_fancy_upsampling)
+    jocl_cl_set_fancy_status();
   if (CL_TRUE == jocl_cl_is_available()) { 
     cinfo->do_fancy_upsampling = TRUE;
   }

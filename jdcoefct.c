@@ -296,11 +296,13 @@ decompress_onepass (j_decompress_ptr cinfo, JSAMPIMAGE output_buf)
         for (MCU_col_num = coef->MCU_ctr; MCU_col_num <= last_MCU_col;
           MCU_col_num++) {
           if (CL_TRUE== jocl_cl_is_available()) {
-#ifndef JOCL_CL_OS_WIN32       
-            jocl_global_data_ptr_input = (JCOEFPTR)jocl_clEnqueueMapBuffer(
-              jocl_cl_get_command_queue(), jocl_global_data_mem_input, CL_TRUE,
-              CL_MAP_WRITE_INVALIDATE_REGION, 0, MAX_IMAGE_WIDTH * MAX_IMAGE_HEIGHT * 4,
-              0, NULL, NULL, NULL);
+#ifndef JOCL_CL_OS_WIN32
+            if(CL_FALSE == jocl_cl_is_nvidia_opencl()) {
+              jocl_global_data_ptr_input = (JCOEFPTR)jocl_clEnqueueMapBuffer(
+                jocl_cl_get_command_queue(), jocl_global_data_mem_input, CL_TRUE,
+                CL_MAP_WRITE_INVALIDATE_REGION, 0, MAX_IMAGE_WIDTH * MAX_IMAGE_HEIGHT * 4,
+                0, NULL, NULL, NULL);
+            }
 #endif
             for (index = 0; index<cinfo->blocks_in_MCU; ++index)
               coef->MCU_buffer[index] = (JBLOCKROW)(jocl_global_data_ptr_input +

@@ -105,7 +105,7 @@ cl_bool jocldec_build_kernels(j_decompress_ptr cinfo)
                                                  CL_FALSE);
     CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[0],
                                                  3,
-                                                 4096*sizeof(int),
+                                                 1024*sizeof(int),
                                                  NULL),
                                                  CL_FALSE);
     CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[0],
@@ -142,7 +142,7 @@ cl_bool jocldec_build_kernels(j_decompress_ptr cinfo)
                                                  CL_FALSE);
     CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[1],
                                                  3,
-                                                 4096*sizeof(int),
+                                                 1024*sizeof(int),
                                                  NULL),
                                                  CL_FALSE);
     CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[1],
@@ -179,7 +179,7 @@ cl_bool jocldec_build_kernels(j_decompress_ptr cinfo)
                                                  CL_FALSE);
     CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[2],
                                                  3,
-                                                 4096*sizeof(float),
+                                                 1024*sizeof(int),
                                                  NULL),
                                                  CL_FALSE);
     CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[2],
@@ -211,7 +211,7 @@ cl_bool jocldec_build_kernels(j_decompress_ptr cinfo)
                                                  CL_FALSE);
     CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[3],
                                                  2,
-                                                 128*sizeof(unsigned char),
+                                                 192*sizeof(unsigned char),
                                                  NULL),
                                                  CL_FALSE);
     CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[3],
@@ -488,7 +488,7 @@ cl_bool jocldec_build_kernels(j_decompress_ptr cinfo)
                                                  CL_FALSE);
     CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[9],
                                                  2,
-                                                 128*sizeof(unsigned char),
+                                                 256*sizeof(unsigned char),
                                                  NULL),
                                                  CL_FALSE);
     CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[9],
@@ -520,7 +520,7 @@ cl_bool jocldec_build_kernels(j_decompress_ptr cinfo)
                                                  CL_FALSE);
     CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[10],
                                                  2,
-                                                 384*sizeof(unsigned char),
+                                                 512*sizeof(unsigned char),
                                                  NULL),
                                                  CL_FALSE);
     CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[10],
@@ -562,7 +562,7 @@ cl_bool jocldec_build_kernels(j_decompress_ptr cinfo)
                                                  CL_FALSE);
     CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[11],
                                                  2,
-                                                 384*sizeof(unsigned char),
+                                                 512*sizeof(unsigned char),
                                                  NULL),
                                                  CL_FALSE);
     CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[11],
@@ -615,7 +615,7 @@ cl_bool jocldec_build_kernels(j_decompress_ptr cinfo)
                                                  CL_FALSE);
     CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[12],
                                                  2,
-                                                 768*sizeof(unsigned char),
+                                                 1024*sizeof(unsigned char),
                                                  NULL),
                                                  CL_FALSE);
     CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[12],
@@ -665,7 +665,7 @@ cl_bool jocldec_build_kernels(j_decompress_ptr cinfo)
                                                  CL_FALSE);
     CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[13],
                                                  2,
-                                                 384*sizeof(unsigned char),
+                                                 512*sizeof(unsigned char),
                                                  NULL),
                                                  CL_FALSE);
     CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[13],
@@ -717,7 +717,7 @@ cl_bool jocldec_build_kernels(j_decompress_ptr cinfo)
                                                  CL_FALSE);
     CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[14],
                                                  2,
-                                                 768*sizeof(unsigned char),
+                                                 1024*sizeof(unsigned char),
                                                  NULL),
                                                  CL_FALSE);
     CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[14],
@@ -767,7 +767,7 @@ cl_bool jocldec_build_kernels(j_decompress_ptr cinfo)
                                                  CL_FALSE);
     CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[15],
                                                  2,
-                                                 128*sizeof(unsigned char),
+                                                 192*sizeof(unsigned char),
                                                  NULL),
                                                  CL_FALSE);
     CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[15],
@@ -1054,6 +1054,10 @@ cl_bool jocldec_run_kernels_full_image(
   unsigned int offset_output,offset_input;
   cl_kernel jocldec_cl_kernel_use;
 
+  int KernelArg2 = 0;
+  int KernelArg5 = 0;
+  int KernelArg6 = 0;
+
   if (data_m==5) data_m_inter = 4;
   switch(data_m) {
     case 3: mcu_out   = 192;
@@ -1082,24 +1086,26 @@ cl_bool jocldec_run_kernels_full_image(
       4096, jocl_global_data_ptr_qutable, &err_code),return CL_FALSE);
 }
 #ifndef JOCL_CL_OS_WIN32
-  CL_SAFE_CALL0(err_code = jocl_clEnqueueUnmapMemObject(
-    jocl_cl_get_command_queue(), jocl_global_data_mem_input,
-    jocl_global_data_ptr_input, 0, NULL, NULL),return CL_FALSE);
+  if(CL_FALSE == jocl_cl_is_nvidia_opencl()) {
+    CL_SAFE_CALL0(err_code = jocl_clEnqueueUnmapMemObject(
+      jocl_cl_get_command_queue(), jocl_global_data_mem_input,
+      jocl_global_data_ptr_input, 0, NULL, NULL),return CL_FALSE);
+  }
 #endif
   offset_input = offset_mcu * mcu_in/8;
-    switch (cinfo->dct_method){
-      case JDCT_IFAST:
-        local_ws = 256;
-        jocldec_cl_kernel_use = jocldec_cl_rundata->kernel[0];
-        break;
-      case JDCT_ISLOW:
-        local_ws = 128;
-        jocldec_cl_kernel_use = jocldec_cl_rundata->kernel[1];
-        break;
-      case JDCT_FLOAT:
-        local_ws = 128;
-        jocldec_cl_kernel_use = jocldec_cl_rundata->kernel[2];
-        break;
+  switch (cinfo->dct_method){
+    case JDCT_IFAST:
+      local_ws = 256;
+      jocldec_cl_kernel_use = jocldec_cl_rundata->kernel[0];
+      break;
+    case JDCT_ISLOW:
+      local_ws = 128;
+      jocldec_cl_kernel_use = jocldec_cl_rundata->kernel[1];
+      break;
+    case JDCT_FLOAT:
+      local_ws = 128;
+      jocldec_cl_kernel_use = jocldec_cl_rundata->kernel[2];
+      break;
   }
   if (0 == offset_mcu) {
     CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_kernel_use,
@@ -1138,87 +1144,45 @@ cl_bool jocldec_run_kernels_full_image(
                                                  NULL,
                                                  NULL),
                                                  return CL_FALSE);
-
-  switch(cinfo->out_color_space) {
-    case JCS_RGB:{
-      if (data_m == 3) {
-      /*1v1 start*/
-        global_ws     = mcu_num * 64;
-        offset_output = offset_mcu * 64;
-        local_ws      = 64;
-        if (0 == offset_mcu) {
-          CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[3],
-                                                       0,
-                                                       sizeof(cl_mem),
-                                                       &jocl_global_data_mem_inter),
-                                                       return CL_FALSE);
-          CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[3],
-                                                       1,
-                                                       sizeof(cl_mem),
-                                                       &jocl_global_data_mem_output),
-                                                       return CL_FALSE);
-          CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[3],
-                                                       2,
-                                                       256*sizeof(unsigned char),
-                                                       NULL),
-                                                       return CL_FALSE);
-          CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[3],
-                                                       3,
-                                                       sizeof(unsigned int),
-                                                       &blocksWidth),
-                                                       return CL_FALSE);
+  if(3 == data_m){
+	global_ws     = mcu_num * 64;
+    offset_output = offset_mcu * 64;
+    local_ws      = 64;
+	switch (cinfo->out_color_space){
+	  case JCS_RGB:
+        jocldec_cl_kernel_use = jocldec_cl_rundata->kernel[3];
+        break;
+	  case JCS_EXT_RGBA:
+        jocldec_cl_kernel_use = jocldec_cl_rundata->kernel[9];
+        break;
+	  case JCS_EXT_BGR:
+        jocldec_cl_kernel_use = jocldec_cl_rundata->kernel[15];
+        break;
+	}/*end switch */
+	if (0 == offset_mcu) {
+      CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_kernel_use,
+                                                    0,
+                                                    sizeof(cl_mem),
+                                                    &jocl_global_data_mem_inter),
+                                                    return CL_FALSE);
+       CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_kernel_use,
+                                                    1,
+                                                    sizeof(cl_mem),
+                                                    &jocl_global_data_mem_output),
+                                                    return CL_FALSE);
+       CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_kernel_use,
+                                                    2,
+                                                    256*sizeof(unsigned char),
+                                                    NULL),
+                                                    return CL_FALSE);
+       CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_kernel_use,
+                                                    3,
+                                                    sizeof(unsigned int),
+                                                    &blocksWidth),
+                                                    return CL_FALSE);
         }
-        CL_SAFE_CALL0(err_code = jocl_clEnqueueNDRangeKernel(jocl_cl_get_command_queue(),
-                                                       jocldec_cl_rundata->kernel[3],
-                                                       1,
-                                                       &offset_output,
-                                                       &global_ws,
-                                                       &local_ws,
-                                                       0,
-                                                       NULL,
-                                                       NULL),
-                                                       return CL_FALSE);
-        /*1v1 end*/
-      }  /* if (data_m == 3) */
-      else if (data_m == 5) {
-        /*1v2 start*/
-        offset_output = offset_mcu * 128;
-        global_ws     = mcu_num * 128;
-        local_ws      = 128;
-        if (0 == offset_mcu) {
-          CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[4],
-                                                       0,
-                                                       sizeof(cl_mem),
-                                                       &jocl_global_data_mem_inter),
-                                                       return CL_FALSE);
-          CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[4],
-                                                       1,
-                                                       sizeof(cl_mem),
-                                                       &jocl_global_data_mem_output),
-                                                       return CL_FALSE);
-          CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[4],
-                                                       2,
-                                                       384*sizeof(unsigned char),
-                                                       NULL),
-                                                       return CL_FALSE);
-          CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[4],
-                                                       3,
-                                                       128*sizeof(unsigned char),
-                                                       NULL),
-                                                       return CL_FALSE);
-          CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[4],
-                                                       4,
-                                                       128*sizeof(unsigned char),
-                                                       NULL),
-                                                       return CL_FALSE);
-          CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[4],
-                                                       5,
-                                                       sizeof(unsigned int),
-                                                       &blocksWidth),
-                                                       return CL_FALSE);
-        }
-        CL_SAFE_CALL0(err_code = jocl_clEnqueueNDRangeKernel(jocl_cl_get_command_queue(),
-                                                       jocldec_cl_rundata->kernel[4],
+       CL_SAFE_CALL0(err_code = jocl_clEnqueueNDRangeKernel(jocl_cl_get_command_queue(),
+                                                       jocldec_cl_kernel_use,
                                                        1,
                                                        &offset_output,
                                                        &global_ws,
@@ -1227,271 +1191,59 @@ cl_bool jocldec_run_kernels_full_image(
                                                        NULL,
                                                        NULL),
                                                        return CL_FALSE);
-        /*1v2 end*/
-      } /* else if (data_m == 5) */
-      else if (data_m == 4) {
-        /*2v1 start fancy*/
-        offset_output = offset_mcu * 64;
-        local_ws      = 64; 
-        if(1) {
-          global_ws = (mcu_num + 1) * 64;
-          if (0 == offset_mcu) {
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[7],
-                                                         0,
-                                                         sizeof(cl_mem),
-                                                         &jocl_global_data_mem_inter),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[7],
-                                                         1,
-                                                         sizeof(cl_mem),
-                                                         &jocl_global_data_mem_output),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[7],
-                                                         2,
-                                                         384*sizeof(unsigned char),
-                                                         NULL),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[7],
-                                                         3,
-                                                         64*sizeof(unsigned char),
-                                                         NULL),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[7],
-                                                         4,
-                                                         64*sizeof(unsigned char),
-                                                         NULL),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[7],
-                                                         5,
-                                                         128*sizeof(unsigned char),
-                                                         NULL),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[7],
-                                                         6,
-                                                         128*sizeof(unsigned char),
-                                                         NULL),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[7],
-                                                         7,
-                                                         sizeof(unsigned int),
-                                                         &blocksWidth),
-                                                         return CL_FALSE);
-          }
-          CL_SAFE_CALL0(err_code = jocl_clEnqueueNDRangeKernel(jocl_cl_get_command_queue(),
-                                                         jocldec_cl_rundata->kernel[7],
-                                                         1,
-                                                         &offset_output,
-                                                         &global_ws,
-                                                         &local_ws,
-                                                         0,
-                                                         NULL,
-                                                         NULL),
-                                                         return CL_FALSE);
-          /*2v1 end fancy*/
-        }
-        else {
-          global_ws = mcu_num * 64;
-          /*no_fancy*/
-          if (0 == offset_mcu) {
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[5],
-                                                         0,
-                                                         sizeof(cl_mem),
-                                                         &jocl_global_data_mem_inter),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[5],
-                                                         1,
-                                                         sizeof(cl_mem),
-                                                         &jocl_global_data_mem_output),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[5],
-                                                         2,
-                                                         384*sizeof(unsigned char),
-                                                         NULL),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[5],
-                                                         3,
-                                                         64*sizeof(unsigned char),
-                                                         NULL),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[5],
-                                                         4,
-                                                         64*sizeof(unsigned char),
-                                                         NULL),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[5],
-                                                         5,
-                                                         128*sizeof(unsigned char),
-                                                         NULL),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[5],
-                                                         6,
-                                                         128*sizeof(unsigned char),
-                                                         NULL),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[5],
-                                                         7,
-                                                         sizeof(unsigned int),
-                                                         &blocksWidth),
-                                                         return CL_FALSE);
-          }
-          CL_SAFE_CALL0(err_code = jocl_clEnqueueNDRangeKernel(jocl_cl_get_command_queue(),
-                                                         jocldec_cl_rundata->kernel[5],
-                                                         1,
-                                                         &offset_output,
-                                                         &global_ws,
-                                                         &local_ws,
-                                                         0,
-                                                         NULL,
-                                                         NULL),
-                                                         return CL_FALSE);
-           /*2v1 nofancy end*/
-        }
-      } /* else if (data_m == 4) */
-      else if (data_m == 6) {
-        offset_output = offset_mcu * 128;
-        global_ws     = mcu_num * 128;
-        local_ws      = 128; 
-        if(1) {
-          if (0 == offset_mcu) {
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[6],
-                                                         0,
-                                                         sizeof(cl_mem),
-                                                         &jocl_global_data_mem_inter),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[6],
-                                                         1,
-                                                         sizeof(cl_mem),
-                                                         &jocl_global_data_mem_output),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[6],
-                                                         2,
-                                                         768*sizeof(unsigned char),
-                                                         NULL),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[6],
-                                                         3,
-                                                         64*sizeof(unsigned char),
-                                                         NULL),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[6],
-                                                         4,
-                                                         64*sizeof(unsigned char),
-                                                         NULL),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[6],
-                                                         5,
-                                                         256*sizeof(unsigned char),
-                                                         NULL),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[6],
-                                                         6,
-                                                         256*sizeof(unsigned char),
-                                                         NULL),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[6],
-                                                         7,
-                                                         sizeof(unsigned int),
-                                                         &blocksWidth),
-                                                         return CL_FALSE);
-          }
-          CL_SAFE_CALL0(err_code = jocl_clEnqueueNDRangeKernel(jocl_cl_get_command_queue(),
-                                                         jocldec_cl_rundata->kernel[6],
-                                                         1,
-                                                         &offset_output,
-                                                         &global_ws,
-                                                         &local_ws,
-                                                         0,
-                                                         NULL,
-                                                         NULL),
-                                                         return CL_FALSE);
-        }
-        else {
-          if (0 == offset_mcu) {
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[8],
-                                                         0,
-                                                         sizeof(cl_mem),
-                                                         &jocl_global_data_mem_inter),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[8],
-                                                         1,
-                                                         sizeof(cl_mem),
-                                                         &jocl_global_data_mem_output),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[8],
-                                                         2,
-                                                         768*sizeof(unsigned char),
-                                                         NULL),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[8],
-                                                         3,
-                                                         64*sizeof(unsigned char),
-                                                         NULL),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[8],
-                                                         4,
-                                                         64*sizeof(unsigned char),
-                                                         NULL),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[8],
-                                                         5,
-                                                         256*sizeof(unsigned char),
-                                                         NULL),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[8],
-                                                         6,
-                                                         256*sizeof(unsigned char),
-                                                         NULL),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[8],
-                                                         7,
-                                                         sizeof(unsigned int),
-                                                         &blocksWidth),
-                                                         return CL_FALSE);
-          }
-          CL_SAFE_CALL0(err_code = jocl_clEnqueueNDRangeKernel(jocl_cl_get_command_queue(),
-                                                         jocldec_cl_rundata->kernel[8],
-                                                         1,
-                                                         &offset_output,
-                                                         &global_ws,
-                                                         &local_ws,
-                                                         0,
-                                                         NULL,
-                                                         NULL),
-                                                         return CL_FALSE);
-        }
+  }  /*1v1 end*/
+  else if(5 == data_m){ 
+	offset_output = offset_mcu * 128;
+    global_ws     = mcu_num * 128;
+    local_ws      = 128;
+	switch (cinfo->out_color_space){
+	  case JCS_RGB:
+		KernelArg2 = 384 * sizeof(unsigned char);
+		jocldec_cl_kernel_use = jocldec_cl_rundata->kernel[4];
+	    break;
+	  case JCS_EXT_RGBA:
+	  	KernelArg2 = 512 * sizeof(unsigned char);
+	  	jocldec_cl_kernel_use = jocldec_cl_rundata->kernel[10];
+        break;
+	  case JCS_EXT_BGR:
+	  	KernelArg2 = 384 * sizeof(unsigned char);
+	  	jocldec_cl_kernel_use = jocldec_cl_rundata->kernel[16];
+        break;
+	}/*end switch */
+	if (0 == offset_mcu) {
+      CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_kernel_use,
+                                                   0,
+                                                   sizeof(cl_mem),
+                                                   &jocl_global_data_mem_inter),
+                                                   return CL_FALSE);
+      CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_kernel_use,
+                                                   1,
+                                                   sizeof(cl_mem),
+                                                   &jocl_global_data_mem_output),
+                                                   return CL_FALSE);
+      CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_kernel_use,
+                                                   2,
+                                                   KernelArg2,
+                                                   NULL),
+                                                   return CL_FALSE);
+      CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_kernel_use,
+                                                   3,
+                                                   128*sizeof(unsigned char),
+                                                   NULL),
+                                                   return CL_FALSE);
+      CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_kernel_use,
+                                                   4,
+                                                   128*sizeof(unsigned char),
+                                                   NULL),
+                                                   return CL_FALSE);
+      CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_kernel_use,
+                                                   5,
+                                                   sizeof(unsigned int),
+                                                   &blocksWidth),
+                                                   return CL_FALSE);
       }
-      break;
-    }
-    case JCS_EXT_RGBA:{
-      if (data_m == 3) {
-        /*h1v1 rgba start*/
-        global_ws     = mcu_num * 64;
-        offset_output = offset_mcu * 64;
-        local_ws      = 64;
-        if (0 == offset_mcu) {
-          CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[9],
-                                                       0,
-                                                       sizeof(cl_mem),
-                                                       &jocl_global_data_mem_inter),
-                                                       return CL_FALSE);
-          CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[9],
-                                                       1,
-                                                       sizeof(cl_mem),
-                                                       &jocl_global_data_mem_output),
-                                                       return CL_FALSE);
-          CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[9],
-                                                       2,
-                                                       256*sizeof(unsigned char),
-                                                       NULL),
-                                                       return CL_FALSE);
-          CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[9],
-                                                       3,
-                                                       sizeof(unsigned int),
-                                                       &blocksWidth),
-                                                       return CL_FALSE);
-        }
-        CL_SAFE_CALL0(err_code = jocl_clEnqueueNDRangeKernel(jocl_cl_get_command_queue(),
-                                                       jocldec_cl_rundata->kernel[9],
+      CL_SAFE_CALL0(err_code = jocl_clEnqueueNDRangeKernel(jocl_cl_get_command_queue(),
+                                                       jocldec_cl_kernel_use,
                                                        1,
                                                        &offset_output,
                                                        &global_ws,
@@ -1500,279 +1252,155 @@ cl_bool jocldec_run_kernels_full_image(
                                                        NULL,
                                                        NULL),
                                                        return CL_FALSE);
-        /*1v1 end*/
-      }  /* if (data_m == 3) */
-      else if (data_m == 5) {
-        /*h1v2 rgba start*/
-        offset_output = offset_mcu * 128;
-        global_ws     = mcu_num * 128;
-        local_ws      = 128;
-        if (0 == offset_mcu) {
-          CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[10],
-                                                       0,
-                                                       sizeof(cl_mem),
-                                                       &jocl_global_data_mem_inter),
-                                                       return CL_FALSE);
-          CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[10],
-                                                       1,
-                                                       sizeof(cl_mem),
-                                                       &jocl_global_data_mem_output),
-                                                       return CL_FALSE);
-          CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[10],
-                                                       2,
-                                                       512*sizeof(unsigned char),
-                                                       NULL),
-                                                       return CL_FALSE);
-          CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[10],
-                                                       3,
-                                                       128*sizeof(unsigned char),
-                                                       NULL),
-                                                       return CL_FALSE);
-          CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[10],
-                                                       4,
-                                                       128*sizeof(unsigned char),
-                                                       NULL),
-                                                       return CL_FALSE);
-          CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[10],
-                                                       5,
-                                                       sizeof(unsigned int),
-                                                       &blocksWidth),
-                                                       return CL_FALSE);
-        }
-        CL_SAFE_CALL0(err_code = jocl_clEnqueueNDRangeKernel(jocl_cl_get_command_queue(),
-                                                       jocldec_cl_rundata->kernel[10],
-                                                       1,
-                                                       &offset_output,
-                                                       &global_ws,
-                                                       &local_ws,
-                                                       0,
-                                                       NULL,
-                                                       NULL),
-                                                       return CL_FALSE);
-        /*h1v2 end*/
-      } /* else if (data_m == 5) */
-      else if (data_m == 4) {
-        /*h2v1 rgba start fancy*/
-        offset_output = offset_mcu * 64;
-        global_ws     = mcu_num * 64;
-        local_ws      = 64; 
-        if(1) {
-          if (0 == offset_mcu) {
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[13],
-                                                         0,
-                                                         sizeof(cl_mem),
-                                                         &jocl_global_data_mem_inter),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[13],
-                                                         1,
-                                                         sizeof(cl_mem),
-                                                         &jocl_global_data_mem_output),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[13],
-                                                         2,
-                                                         512*sizeof(unsigned char),
-                                                         NULL),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[13],
-                                                         3,
-                                                         64*sizeof(unsigned char),
-                                                         NULL),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[13],
-                                                         4,
-                                                         64*sizeof(unsigned char),
-                                                         NULL),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[13],
-                                                         5,
-                                                         128*sizeof(unsigned char),
-                                                         NULL),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[13],
-                                                         6,
-                                                         128*sizeof(unsigned char),
-                                                         NULL),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[13],
-                                                         7,
-                                                         sizeof(unsigned int),
-                                                         &blocksWidth),
-                                                         return CL_FALSE);
+  }/*1v2 end*/
+  else if((4 == data_m ) || (6 == data_m )){
+	switch (cinfo->out_color_space){
+	  case JCS_RGB:{
+	    if(4 == data_m){
+          KernelArg2 = 384 * sizeof(unsigned char);
+	  	  KernelArg5 = 128 * sizeof(unsigned char);
+	  	  KernelArg6 = 128 * sizeof(unsigned char);
+	  
+	  	  offset_output = offset_mcu * 64;
+          local_ws      = 64;
+	  	  if(CL_TRUE == jocl_cl_get_fancy_status()){
+	  	    global_ws = (mcu_num+1) * 64;
+	  	    jocldec_cl_kernel_use = jocldec_cl_rundata -> kernel[7];
           }
-          CL_SAFE_CALL0(err_code = jocl_clEnqueueNDRangeKernel(jocl_cl_get_command_queue(),
-                                                         jocldec_cl_rundata->kernel[13],
-                                                         1,
-                                                         &offset_output,
-                                                         &global_ws,
-                                                         &local_ws,
-                                                         0,
-                                                         NULL,
-                                                         NULL),
-                                                         return CL_FALSE);
-          /*2v1 end fancy*/
-        }
-        else {
-          /*h2v1 rgba no_fancy*/
-          if (0 == offset_mcu) {
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[11],
-                                                         0,
-                                                         sizeof(cl_mem),
-                                                         &jocl_global_data_mem_inter),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[11],
-                                                         1,
-                                                         sizeof(cl_mem),
-                                                         &jocl_global_data_mem_output),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[11],
-                                                         2,
-                                                         512*sizeof(unsigned char),
-                                                         NULL),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[11],
-                                                         3,
-                                                         64*sizeof(unsigned char),
-                                                         NULL),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[11],
-                                                         4,
-                                                         64*sizeof(unsigned char),
-                                                         NULL),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[11],
-                                                         5,
-                                                         128*sizeof(unsigned char),
-                                                         NULL),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[11],
-                                                         6,
-                                                         128*sizeof(unsigned char),
-                                                         NULL),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[11],
-                                                         7,
-                                                         sizeof(unsigned int),
-                                                         &blocksWidth),
-                                                         return CL_FALSE);
+	  	  else{
+	  	    global_ws = mcu_num * 64;
+	  	    jocldec_cl_kernel_use = jocldec_cl_rundata -> kernel[5];
+	  	  }
+	    }/*end if(data_m == 4)*/
+	    else if(6 == data_m){
+	      KernelArg2 = 768 * sizeof(unsigned char);
+	  	  KernelArg5 = 256 * sizeof(unsigned char);
+	  	  KernelArg6 = 256 * sizeof(unsigned char);
+	  
+	  	  offset_output = offset_mcu * 128;
+          global_ws     = mcu_num * 128;
+          local_ws      = 128;
+	  	  if(1){
+	  	    jocldec_cl_kernel_use = jocldec_cl_rundata -> kernel[6];
+	  	  }
+	  	  else{
+	  	    jocldec_cl_kernel_use = jocldec_cl_rundata -> kernel[8];
+	  	  }      
+	    }/*end if(data_m == 6)*/
+	  }/*end of case JCS_RGB:*/
+	  break;
+	  case JCS_EXT_RGBA:{
+	    if(4 == data_m){
+          KernelArg2 = 512 * sizeof(unsigned char);
+	  	  KernelArg5 = 128 * sizeof(unsigned char);
+	  	  KernelArg6 = 128 * sizeof(unsigned char);
+	  
+	  	  offset_output = offset_mcu * 64;
+          global_ws     = mcu_num * 64;
+          local_ws      = 64;
+	  	  if(CL_TRUE == jocl_cl_get_fancy_status()){
+	  	    jocldec_cl_kernel_use = jocldec_cl_rundata -> kernel[13];
+	  	  }
+	  	  else{
+	  	    jocldec_cl_kernel_use = jocldec_cl_rundata -> kernel[11];
+	  	  }
+	    }/*end if(data_m == 4)*/
+	    else if(6 == data_m){
+	      KernelArg2 = 1024 * sizeof(unsigned char);
+	  	  KernelArg5 = 256 * sizeof(unsigned char);
+	  	  KernelArg6 = 256 * sizeof(unsigned char);
+	  
+	  	  offset_output = offset_mcu * 128;
+          global_ws     = mcu_num * 128;
+          local_ws      = 128;
+	  	  if(1){
+	  	    jocldec_cl_kernel_use = jocldec_cl_rundata -> kernel[12];
+	  	  }
+	  	  else{
+	  	    jocldec_cl_kernel_use = jocldec_cl_rundata -> kernel[14];
+	  	  }    
+	    }/* end if(data_m == 6) */ 
+	  }/*end of case JCS_EXT_RGBA:*/
+	  break;
+	  case JCS_EXT_BGR:{
+		if(4 == data_m){
+          KernelArg2 = 348 * sizeof(unsigned char);
+	  	  KernelArg5 = 128 * sizeof(unsigned char);
+	  	  KernelArg6 = 128 * sizeof(unsigned char);
+	  
+	  	  offset_output = offset_mcu * 64;
+          local_ws      = 64;
+	  	  if(CL_TRUE == jocl_cl_get_fancy_status()){
+		    global_ws = (mcu_num + 1) * 64;
+	  	    jocldec_cl_kernel_use = jocldec_cl_rundata -> kernel[19];
+	  	  }
+	  	  else{
+			global_ws = mcu_num * 64;
+	  	    jocldec_cl_kernel_use = jocldec_cl_rundata -> kernel[17];
+	  	  }
+        }/*end if(data_m == 4)*/
+        else if(6 == data_m){
+          KernelArg2 = 768 * sizeof(unsigned char);
+          KernelArg5 = 256 * sizeof(unsigned char);
+          KernelArg6 = 256 * sizeof(unsigned char);
+
+          offset_output = offset_mcu * 128;
+          global_ws     = mcu_num * 128;
+          local_ws      = 128;
+          if(1){
+            jocldec_cl_kernel_use = jocldec_cl_rundata -> kernel[18];
           }
-          CL_SAFE_CALL0(err_code = jocl_clEnqueueNDRangeKernel(jocl_cl_get_command_queue(),
-                                                         jocldec_cl_rundata->kernel[11],
-                                                         1,
-                                                         &offset_output,
-                                                         &global_ws,
-                                                         &local_ws,
-                                                         0,
-                                                         NULL,
-                                                         NULL),
-                                                         return CL_FALSE);
-           /*2v1 nofancy end*/
-        }
-      } /* else if (data_m == 4) */
-      else if (data_m == 6) {
-        offset_output = offset_mcu * 128;
-        global_ws     = mcu_num * 128;
-        local_ws      = 128; 
-        /*h2v2 rgba*/
-        if(1){
-         if (0 == offset_mcu) {
-           CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[12],
-                                                       0,
-                                                       sizeof(cl_mem),
-                                                       &jocl_global_data_mem_inter),
-                                                       return CL_FALSE);
-          CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[12],
-                                                       1,
-                                                       sizeof(cl_mem),
-                                                       &jocl_global_data_mem_output),
-                                                       return CL_FALSE);
-          CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[12],
-                                                       2,
-                                                       1024*sizeof(unsigned char),
-                                                       NULL),
-                                                       return CL_FALSE);
-          CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[12],
-                                                       3,
-                                                       64*sizeof(unsigned char),
-                                                       NULL),
-                                                       return CL_FALSE);
-          CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[12],
-                                                       4,
-                                                       64*sizeof(unsigned char),
-                                                       NULL),
-                                                       return CL_FALSE);
-          CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[12],
-                                                       5,
-                                                       256*sizeof(unsigned char),
-                                                       NULL),
-                                                       return CL_FALSE);
-          CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[12],
-                                                       6,
-                                                       256*sizeof(unsigned char),
-                                                       NULL),
-                                                       return CL_FALSE);
-          CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[12],
-                                                       7,
-                                                       sizeof(unsigned int),
-                                                       &blocksWidth),
-                                                       return CL_FALSE);
-        }
-        CL_SAFE_CALL0(err_code = jocl_clEnqueueNDRangeKernel(jocl_cl_get_command_queue(),
-                                                       jocldec_cl_rundata->kernel[12],
-                                                       1,
-                                                       &offset_output,
-                                                       &global_ws,
-                                                       &local_ws,
-                                                       0,
-                                                       NULL,
-                                                       NULL),
-                                                       return CL_FALSE);
-        }
-        else{
-          if (0 == offset_mcu) {
-            /* h2v2 rgba fancy */
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[14],
-                                                         0,
-                                                         sizeof(cl_mem),
-                                                         &jocl_global_data_mem_inter),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[14],
-                                                         1,
-                                                         sizeof(cl_mem),
-                                                         &jocl_global_data_mem_output),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[14],
-                                                         2,
-                                                         1024*sizeof(unsigned char),
-                                                         NULL),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[14],
-                                                         3,
-                                                         64*sizeof(unsigned char),
-                                                         NULL),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[14],
-                                                         4,
-                                                         64*sizeof(unsigned char),
-                                                         NULL),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[14],
-                                                         5,
-                                                         256*sizeof(unsigned char),
-                                                         NULL),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[14],
-                                                         6,
-                                                         256*sizeof(unsigned char),
-                                                         NULL),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[14],
-                                                         7,
-                                                         sizeof(unsigned int),
-                                                         &blocksWidth),
-                                                         return CL_FALSE);
-          }  
-          CL_SAFE_CALL0(err_code = jocl_clEnqueueNDRangeKernel(jocl_cl_get_command_queue(),
-                                                         jocldec_cl_rundata->kernel[14],
+          else{
+            jocldec_cl_kernel_use = jocldec_cl_rundata -> kernel[20];
+          }
+      }/* end if(data_m == 6)*/
+     }/*end of case JCS_EXT_BGR:*/
+     break;
+    }/*end switch */
+    if (0 == offset_mcu) {
+       CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_kernel_use,
+                                                    0,
+                                                    sizeof(cl_mem),
+                                                    &jocl_global_data_mem_inter),
+                                                    return CL_FALSE);
+       CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_kernel_use,
+                                                    1,
+                                                    sizeof(cl_mem),
+                                                    &jocl_global_data_mem_output),
+                                                    return CL_FALSE);
+       CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_kernel_use,
+                                                    2,
+                                                    KernelArg2,
+                                                    NULL),
+                                                    return CL_FALSE);
+       CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_kernel_use,
+                                                    3,
+                                                    64*sizeof(unsigned char),
+                                                    NULL),
+                                                    return CL_FALSE);
+       CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_kernel_use,
+                                                    4,
+                                                    64*sizeof(unsigned char),
+                                                    NULL),
+                                                    return CL_FALSE);
+       CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_kernel_use,
+                                                    5,
+                                                    KernelArg5,
+                                                    NULL),
+                                                    return CL_FALSE);
+       CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_kernel_use,
+                                                    6,
+                                                    KernelArg6,
+                                                    NULL),
+                                                    return CL_FALSE);
+       CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_kernel_use,
+                                                    7,
+                                                    sizeof(unsigned int),
+                                                    &blocksWidth),
+                                                    return CL_FALSE);
+       }
+       CL_SAFE_CALL0(err_code = jocl_clEnqueueNDRangeKernel(jocl_cl_get_command_queue(),
+                                                         jocldec_cl_kernel_use,
                                                          1,
                                                          &offset_output,
                                                          &global_ws,
@@ -1782,332 +1410,6 @@ cl_bool jocldec_run_kernels_full_image(
                                                          NULL),
                                                          return CL_FALSE);
 
-        }
-      }
-      break;
-    }
-    case JCS_EXT_BGR:{
-      if (data_m == 3) {
-        /*1v1 start*/
-        global_ws     = mcu_num * 64;
-        offset_output = offset_mcu * 64;
-        local_ws      = 64;
-        if (0 == offset_mcu) {
-          CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[15],
-                                                       0,
-                                                       sizeof(cl_mem),
-                                                       &jocl_global_data_mem_inter),
-                                                       return CL_FALSE);
-          CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[15],
-                                                       1,
-                                                       sizeof(cl_mem),
-                                                       &jocl_global_data_mem_output),
-                                                       return CL_FALSE);
-          CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[15],
-                                                       2,
-                                                       256*sizeof(unsigned char),
-                                                       NULL),
-                                                       return CL_FALSE);
-          CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[15],
-                                                       3,
-                                                       sizeof(unsigned int),
-                                                       &blocksWidth),
-                                                       return CL_FALSE);
-        }
-        CL_SAFE_CALL0(err_code = jocl_clEnqueueNDRangeKernel(jocl_cl_get_command_queue(),
-                                                       jocldec_cl_rundata->kernel[15],
-                                                       1,
-                                                       &offset_output,
-                                                       &global_ws,
-                                                       &local_ws,
-                                                       0,
-                                                       NULL,
-                                                       NULL),
-                                                       return CL_FALSE);
-        /*1v1 end*/
-      }  /* if (data_m == 3) */
-      else if (data_m == 5) {
-        /*1v2 start*/
-        offset_output = offset_mcu * 128;
-        global_ws     = mcu_num * 128;
-        local_ws      = 128;
-        if (0 == offset_mcu) {
-          CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[16],
-                                                       0,
-                                                       sizeof(cl_mem),
-                                                       &jocl_global_data_mem_inter),
-                                                       return CL_FALSE);
-          CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[16],
-                                                       1,
-                                                       sizeof(cl_mem),
-                                                       &jocl_global_data_mem_output),
-                                                       return CL_FALSE);
-          CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[16],
-                                                       2,
-                                                       384*sizeof(unsigned char),
-                                                       NULL),
-                                                       return CL_FALSE);
-          CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[16],
-                                                       3,
-                                                       128*sizeof(unsigned char),
-                                                       NULL),
-                                                       return CL_FALSE);
-          CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[16],
-                                                       4,
-                                                       128*sizeof(unsigned char),
-                                                       NULL),
-                                                       return CL_FALSE);
-          CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[16],
-                                                       5,
-                                                       sizeof(unsigned int),
-                                                       &blocksWidth),
-                                                       return CL_FALSE);
-        }
-        CL_SAFE_CALL0(err_code = jocl_clEnqueueNDRangeKernel(jocl_cl_get_command_queue(),
-                                                       jocldec_cl_rundata->kernel[16],
-                                                       1,
-                                                       &offset_output,
-                                                       &global_ws,
-                                                       &local_ws,
-                                                       0,
-                                                       NULL,
-                                                       NULL),
-                                                       return CL_FALSE);
-        /*1v2 end*/
-      } /* else if (data_m == 5) */
-      else if (data_m == 4) {
-        /*2v1 start fancy*/
-        offset_output = offset_mcu * 64;
-        local_ws      = 64; 
-        if(1) {
-          global_ws = (mcu_num + 1) * 64;
-          if (0 == offset_mcu) {
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[19],
-                                                         0,
-                                                         sizeof(cl_mem),
-                                                         &jocl_global_data_mem_inter),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[19],
-                                                         1,
-                                                         sizeof(cl_mem),
-                                                         &jocl_global_data_mem_output),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[19],
-                                                         2,
-                                                         384*sizeof(unsigned char),
-                                                         NULL),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[19],
-                                                         3,
-                                                         64*sizeof(unsigned char),
-                                                         NULL),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[19],
-                                                         4,
-                                                         64*sizeof(unsigned char),
-                                                         NULL),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[19],
-                                                         5,
-                                                         128*sizeof(unsigned char),
-                                                         NULL),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[19],
-                                                         6,
-                                                         128*sizeof(unsigned char),
-                                                         NULL),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[19],
-                                                         7,
-                                                         sizeof(unsigned int),
-                                                         &blocksWidth),
-                                                         return CL_FALSE);
-          }
-          CL_SAFE_CALL0(err_code = jocl_clEnqueueNDRangeKernel(jocl_cl_get_command_queue(),
-                                                         jocldec_cl_rundata->kernel[19],
-                                                         1,
-                                                         &offset_output,
-                                                         &global_ws,
-                                                         &local_ws,
-                                                         0,
-                                                         NULL,
-                                                         NULL),
-                                                         return CL_FALSE);
-          /*2v1 end fancy*/
-        }
-        else {
-          global_ws = mcu_num * 64;
-          /*no_fancy*/
-          if (0 == offset_mcu) {
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[17],
-                                                         0,
-                                                         sizeof(cl_mem),
-                                                         &jocl_global_data_mem_inter),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[17],
-                                                         1,
-                                                         sizeof(cl_mem),
-                                                         &jocl_global_data_mem_output),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[17],
-                                                         2,
-                                                         384*sizeof(unsigned char),
-                                                         NULL),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[17],
-                                                         3,
-                                                         64*sizeof(unsigned char),
-                                                         NULL),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[17],
-                                                         4,
-                                                         64*sizeof(unsigned char),
-                                                         NULL),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[17],
-                                                         5,
-                                                         128*sizeof(unsigned char),
-                                                         NULL),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[17],
-                                                         6,
-                                                         128*sizeof(unsigned char),
-                                                         NULL),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[17],
-                                                         7,
-                                                         sizeof(unsigned int),
-                                                         &blocksWidth),
-                                                         return CL_FALSE);
-          }  
-          CL_SAFE_CALL0(err_code = jocl_clEnqueueNDRangeKernel(jocl_cl_get_command_queue(),
-                                                         jocldec_cl_rundata->kernel[17],
-                                                         1,
-                                                         &offset_output,
-                                                         &global_ws,
-                                                         &local_ws,
-                                                         0,
-                                                         NULL,
-                                                         NULL),
-                                                         return CL_FALSE);
-           /*2v1 nofancy end*/
-        }
-      } /* else if (data_m == 4) */
-      else if (data_m == 6) {
-        offset_output = offset_mcu * 128;
-        global_ws     = mcu_num * 128;
-        local_ws      = 128; 
-        if(1) {
-          if (0 == offset_mcu) {
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[18],
-                                                         0,
-                                                         sizeof(cl_mem),
-                                                         &jocl_global_data_mem_inter),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[18],
-                                                         1,
-                                                         sizeof(cl_mem),
-                                                         &jocl_global_data_mem_output),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[18],
-                                                         2,
-                                                         768*sizeof(unsigned char),
-                                                         NULL),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[18],
-                                                         3,
-                                                         64*sizeof(unsigned char),
-                                                         NULL),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[18],
-                                                         4,
-                                                         64*sizeof(unsigned char),
-                                                         NULL),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[18],
-                                                         5,
-                                                         256*sizeof(unsigned char),
-                                                         NULL),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[18],
-                                                         6,
-                                                         256*sizeof(unsigned char),
-                                                         NULL),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[18],
-                                                         7,
-                                                         sizeof(unsigned int),
-                                                         &blocksWidth),
-                                                         return CL_FALSE);
-          }
-          CL_SAFE_CALL0(err_code = jocl_clEnqueueNDRangeKernel(jocl_cl_get_command_queue(),
-                                                         jocldec_cl_rundata->kernel[18],
-                                                         1,
-                                                         &offset_output,
-                                                         &global_ws,
-                                                         &local_ws,
-                                                         0,
-                                                         NULL,
-                                                         NULL),
-                                                         return CL_FALSE);
-        }
-        else {
-          if (0 == offset_mcu) {
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[20],
-                                                         0,
-                                                         sizeof(cl_mem),
-                                                         &jocl_global_data_mem_inter),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[20],
-                                                         1,
-                                                         sizeof(cl_mem),
-                                                         &jocl_global_data_mem_output),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[20],
-                                                         2,
-                                                         768*sizeof(unsigned char),
-                                                         NULL),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[20],
-                                                         3,
-                                                         64*sizeof(unsigned char),
-                                                         NULL),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[20],
-                                                         4,
-                                                         64*sizeof(unsigned char),
-                                                         NULL),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[20],
-                                                         5,
-                                                         256*sizeof(unsigned char),
-                                                         NULL),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[20],
-                                                         6,
-                                                         256*sizeof(unsigned char),
-                                                         NULL),
-                                                         return CL_FALSE);
-            CL_SAFE_CALL0(err_code = jocl_clSetKernelArg(jocldec_cl_rundata->kernel[20],
-                                                         7,
-                                                         sizeof(unsigned int),
-                                                         &blocksWidth),
-                                                         return CL_FALSE);
-          }  
-          CL_SAFE_CALL0(err_code = jocl_clEnqueueNDRangeKernel(jocl_cl_get_command_queue(),
-                                                         jocldec_cl_rundata->kernel[20],
-                                                         1,
-                                                         &offset_output,
-                                                         &global_ws,
-                                                         &local_ws,
-                                                         0,
-                                                         NULL,
-                                                         NULL),
-                                                         return CL_FALSE);
-        }
-      }
-      break;
-    }
   }
   size_map = cinfo->max_h_samp_factor * cinfo->MCUs_per_row * DCTSIZE *
     cinfo->image_height * NUM_COMPONENT;

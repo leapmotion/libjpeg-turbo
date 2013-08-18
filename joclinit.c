@@ -29,6 +29,7 @@ typedef struct
   cl_command_queue command_queue;
   cl_bool          is_opencl_available;
   cl_bool          is_opencl_support;
+  cl_bool          fancy_index;
   char             platform_profile   [1024];
   char             platform_version   [1024];
   char             platform_name      [1024];
@@ -364,6 +365,7 @@ cl_bool jocl_cl_init()
     /* *** OpenCL initialized successfully, modify the mark. *** */
     ocl_status.is_opencl_available = CL_TRUE;
     ocl_status.is_opencl_support = CL_TRUE;
+    ocl_status.fancy_index = CL_TRUE;
     CL_DEBUG_NOTE("OpenCL is enabled.\n");
   }
   return CL_TRUE;
@@ -667,10 +669,22 @@ cl_bool jocl_cl_is_opencl_decompress(j_decompress_ptr cinfo)
   if(cinfo->num_components==1||
      (cinfo->blocks_in_MCU!=6 && cinfo->blocks_in_MCU!=3 && cinfo->blocks_in_MCU!=4))
      return CL_FALSE;
-  
+  if(JCS_GRAYSCALE == cinfo->out_color_space)
+     return CL_FALSE;
+
   if((output_buffer > MAX_IMAGE_WIDTH * MAX_IMAGE_HEIGHT * 6) ||
   (input_buffer  > MAX_IMAGE_WIDTH * MAX_IMAGE_HEIGHT * 4))
      return CL_FALSE;
-
+  
   return CL_TRUE;
+}
+
+cl_bool jocl_cl_get_fancy_status(void)
+{
+  return ocl_status.fancy_index;
+}
+
+void jocl_cl_set_fancy_status(void)
+{
+  ocl_status.fancy_index = CL_FALSE;
 }

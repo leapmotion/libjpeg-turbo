@@ -233,7 +233,8 @@ void             jocl_cl_set_opencl_success        (void);
 void             jocl_cl_set_opencl_support_failure(void);
 cl_bool          jocl_cl_is_opencl_decompress      (j_decompress_ptr cinfo);
 cl_bool          jocl_cl_is_nvidia_opencl          (void);
-
+void             jocl_cl_set_fancy_status          (void);
+cl_bool          jocl_cl_get_fancy_status          (void);
 
 /*
  * The macro definition for exception handling code.

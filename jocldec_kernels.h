@@ -426,7 +426,7 @@ static const char     * jocldec_cl_source2  =
 "      localIdx / 6 * mcu_width * 6] = vload4(localIdx, inter);           \n"
 "}                                                                        \n"
 "                                                                         \n"
-"__kernel void UPSAMPLE_H2V1_RGB            (__global uchar  *src,        \n"
+"__kernel void UPSAMPLE_H2V1_RGB        (__global uchar  *src,            \n"
 "                                        __global uchar8 *dst,            \n"
 "                                        __local  uchar  *inter,          \n"
 "                                        __local  uchar  *cb_cache,       \n"
@@ -686,7 +686,7 @@ static const char     * jocldec_cl_source3  =
 "                                        __local  uchar2 *cr_upsample,    \n"
 "                                        const    uint    mcu_width)      \n"
 "{                                                                        \n"
-/*"  uint   globalIdx   = get_global_id(0);                                 \n"
+"  uint   globalIdx   = get_global_id(0);                                 \n"
 "  uint   localIdx    = get_local_id (0);                                 \n"
 "  uint   transOffset = localIdx - (localIdx >> 5) * 60 +                 \n"
 "    (localIdx >> 2 << 2) + (localIdx >> 6) * 56;                         \n"
@@ -805,7 +805,7 @@ static const char     * jocldec_cl_source3  =
 "    dataInRightBottomCr = src[(globalIdx/128 + 1) * 384 + 328];          \n"
 "  }                                                                      \n"
 "  else if (!(globalIdx / 128 / mcu_width) &&                             \n"
-"    (localIdx == 0) && globalIdx){                                       \n"
+"    (localIdx == 0) && (globalIdx / 128 % mcu_width)){                   \n"
 "    dataInTopCb        = dataInCb;                                       \n"
 "    dataInLeftCb       = src[(globalIdx/128 - 1) * 384 + 263];           \n"
 "    dataInLeftTopCb    = dataInLeftCb;                                   \n"
@@ -1127,7 +1127,7 @@ static const char     * jocldec_cl_source3  =
 "  if (localIdx < 96)                                                     \n"
 "    dst[y * mcu_width * 96 + x * 6 + localIdx % 6                        \n"
 "      + localIdx / 6 * mcu_width * 6] = vload8(localIdx, inter);         \n"
-"                                                                         \n"*/
+"                                                                         \n"
 "}                                                                        \n";
 
 static const char     * jocldec_cl_source4  =
@@ -1475,7 +1475,7 @@ static const char     * jocldec_cl_source5  =
 "                                        __local  uchar2 *cr_upsample,    \n"
 "                                        const    uint    mcu_width)      \n"
 "{                                                                        \n"
-/*"  uint   globalIdx   = get_global_id(0);                                 \n"
+"  uint   globalIdx   = get_global_id(0);                                 \n"
 "  uint   localIdx    = get_local_id (0);                                 \n"
 "  uint   transOffset = localIdx - (localIdx >> 5) * 60 +                 \n"
 "    (localIdx >> 2 << 2) + (localIdx >> 6) * 56;                         \n"
@@ -1594,7 +1594,7 @@ static const char     * jocldec_cl_source5  =
 "    dataInRightBottomCr = src[(globalIdx/128 + 1) * 384 + 328];          \n"
 "  }                                                                      \n"
 "  else if (!(globalIdx / 128 / mcu_width) &&                             \n"
-"    (localIdx == 0) && globalIdx){                                       \n"
+"    (localIdx == 0) && (globalIdx / 128 % mcu_width)){                   \n"
 "    dataInTopCb        = dataInCb;                                       \n"
 "    dataInLeftCb       = src[(globalIdx/128 - 1) * 384 + 263];           \n"
 "    dataInLeftTopCb    = dataInLeftCb;                                   \n"
@@ -1918,7 +1918,7 @@ static const char     * jocldec_cl_source5  =
 "  if (localIdx < 128)                                                    \n"
 "    dst[y * mcu_width * 128 + x * 8 + localIdx % 8                       \n"
 "      + localIdx / 8 * mcu_width * 8] = vload8(localIdx, inter);         \n"
-"                                                                         \n"*/
+"                                                                         \n"
 "}                                                                        \n";
 static const char     * jocldec_cl_source6  =
 "__kernel void UPSAMPLE_H1V1_BGR            (__global uchar  *src,        \n"
@@ -2257,7 +2257,7 @@ static const char     * jocldec_cl_source7  =
 "                                        __local  uchar2 *cr_upsample,    \n"
 "                                        const    uint    mcu_width)      \n"
 "{                                                                        \n"
-/*"  uint   globalIdx   = get_global_id(0);                                 \n"
+"  uint   globalIdx   = get_global_id(0);                                 \n"
 "  uint   localIdx    = get_local_id (0);                                 \n"
 "  uint   transOffset = localIdx - (localIdx >> 5) * 60 +                 \n"
 "    (localIdx >> 2 << 2) + (localIdx >> 6) * 56;                         \n"
@@ -2376,7 +2376,7 @@ static const char     * jocldec_cl_source7  =
 "    dataInRightBottomCr = src[(globalIdx/128 + 1) * 384 + 328];          \n"
 "  }                                                                      \n"
 "  else if (!(globalIdx / 128 / mcu_width) &&                             \n"
-"    (localIdx == 0) && globalIdx){                                       \n"
+"    (localIdx == 0) && (globalIdx / 128 % mcu_width)){                   \n"
 "    dataInTopCb        = dataInCb;                                       \n"
 "    dataInLeftCb       = src[(globalIdx/128 - 1) * 384 + 263];           \n"
 "    dataInLeftTopCb    = dataInLeftCb;                                   \n"
@@ -2698,7 +2698,7 @@ static const char     * jocldec_cl_source7  =
 "  if (localIdx < 96)                                                     \n"
 "    dst[y * mcu_width * 96 + x * 6 + localIdx % 6                        \n"
 "      + localIdx / 6 * mcu_width * 6] = vload8(localIdx, inter);         \n"
-"                                                                         \n"*/
+"                                                                         \n"
 "}                                                                        \n";
 
 #endif
